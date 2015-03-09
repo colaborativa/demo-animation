@@ -1,5 +1,5 @@
-  width               = 1100
-  height              = 600
+  width               = 1050
+  height              = 625
   equilateralAltitude = Math.sqrt(3.0) / 2.0
   triangleScale       = 30
   patch_width         = width * 1.1
@@ -28,14 +28,14 @@
   $.get 'assets/logo.obj', {}, (contents) ->
   # Create shape from object file
     shapeobj = seen.Shapes.obj(contents, false)
-    shapeobj.scale(0.25).translate(0,0,-100).rotx(Math.PI/4).roty(-Math.PI/4).rotz(0)
+    shapeobj.scale(1).translate(0,0,100).rotx(0).roty(0).rotz(0)
   # Update scene model
     model.add(shapeobj)
 
   $.get 'assets/background.obj', {}, (contents) ->
   # Create shape from object file
     shapeback = seen.Shapes.obj(contents, false)
-    shapeback.scale(1).translate(0,0,-100).rotx(Math.PI/4).roty(-Math.PI/4).rotz(0)
+    shapeback.scale(1).translate(0,0,-100).rotx(0).roty(0).rotz(0)
     console.log(shapeback.surfaces[0].points)
   # Update scene model
     model.add(shapeback)
