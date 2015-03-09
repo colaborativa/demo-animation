@@ -1,15 +1,3 @@
-<html><head>
-  <title>Noisy Wave Patch | seen.js</title>
-  
-  <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-  <link href="css/theme.css" rel="stylesheet" type="text/css">
-  <script src="lib/seen.min.js"></script>
-  <script src="lib/coffee-script.min.js"></script>
-</head>
-<body>
-  <canvas width="1100" height="500" id="seen-canvas"></canvas>
-  <script type="text/coffeescript" src="lib/simplex-noise.coffee"></script>
-  <script type="text/coffeescript" id="code">
   width               = 1100
   height              = 600
   equilateralAltitude = Math.sqrt(3.0) / 2.0
@@ -17,7 +5,7 @@
   patch_width         = width * 1.1
   patch_height        = height * 1.1
 
-  # Create patch of triangles that spans the view
+# Create patch of triangles that spans the view
   shape = seen.Shapes.patch(
     patch_width / triangleScale / equilateralAltitude
     patch_height / triangleScale
@@ -27,7 +15,7 @@
   .rotx(0)
   seen.Colors.randomSurfaces2(shape)
 
-  # Create scene and render context
+# Create scene and render context
   scene = new seen.Scene
     model    : seen.Models.default().add(shape)
     viewport : seen.Viewports.center(width, height)
@@ -36,7 +24,7 @@
 
   context = seen.Context('seen-canvas', scene).render()
 
-  # Apply animated 3D simplex noise to patch vertices
+# Apply animated 3D simplex noise to patch vertices
   t = 0
   noiser = new Simplex3D(shape)
   context.animate()
@@ -49,5 +37,3 @@
         surf.dirty = true
     )
     .start()
-</script>
-</body></html>
