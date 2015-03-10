@@ -6,15 +6,13 @@
   patch_height        = height * 1.1
 
   # Create patch of triangles that spans the view
-  shape = seen.Shapes.patch(
-    patch_width / triangleScale / equilateralAltitude
-    patch_height / triangleScale
-  )
-  .scale(triangleScale)
-  .translate(-patch_width/2, -patch_height/2 + 80)
-  .rotx(0)
+  shapeobj = seen.Shapes.tetrahedron()
+  shapeback = seen.Shapes.tetrahedron()  
 
-  seen.Colors.randomSurfaces2(shape)
+  shape = seen.Shapes.tetrahedron()
+  .scale(0.1)
+  .translate(0,0,-700)
+  .rotx(0)
 
   model = seen.Models.default().add(shape)
 
@@ -30,14 +28,15 @@
     shapeobj = seen.Shapes.obj(contents, false)
     shapeobj.scale(1).translate(0,0,100).rotx(0).roty(0).rotz(0)
   # Update scene model
+    seen.Colors.randomSurfaces2(shapeobj)
     model.add(shapeobj)
 
   $.get 'assets/background.obj', {}, (contents) ->
   # Create shape from object file
     shapeback = seen.Shapes.obj(contents, false)
     shapeback.scale(1).translate(0,0,-100).rotx(0).roty(0).rotz(0)
-    console.log(shapeback.surfaces[0].points)
   # Update scene model
+    seen.Colors.randomSurfaces2(shapeback)
     model.add(shapeback)
 
 
@@ -45,12 +44,25 @@
 
 # Apply animated 3D simplex noise to patch vertices
   t = 0
-  noiser = new Simplex3D(shape)
+  noiser = new Simplex3D(shapeobj)
   context.animate()
     .onBefore((t)->
-      for surf in shape.surfaces
+      for surf in shapeobj.surfaces
         for p in surf.points
           p.z = 4*noiser.noise(p.x/8, p.y/8, t*1e-4)
+        # Since we're modifying the point directly, we need to mark the surface dirty
+        # to make sure the cache doesn't ignore the change
+        surf.dirty = true
+    )
+    .start()
+# Apply animated 3D simplex noise to patch vertices
+  t = 0
+  noiser = new Simplex3D(shapeback)
+  context.animate()
+    .onBefore((t)->
+      for surf in shapeback.surfaces
+        for p in surf.points
+          p.z = 20*noiser.noise(p.x/8, p.y/8, t*1e-4)
         # Since we're modifying the point directly, we need to mark the surface dirty
         # to make sure the cache doesn't ignore the change
         surf.dirty = true
