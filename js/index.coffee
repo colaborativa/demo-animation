@@ -4,8 +4,6 @@
   triangleScale       = 30
   patch_width         = width * 1.1
   patch_height        = height * 1.1
-  surfObjLogo         = null
-  shapeObjLogo        = null
 
   # Create patch of triangles that spans the view
   shape = seen.Shapes.patch(
@@ -32,17 +30,14 @@
     shapeobj = seen.Shapes.obj(contents, false)
     shapeobj.scale(1).translate(0,0,100).rotx(0).roty(0).rotz(0)
   # Update scene model
-    surfObjLogo = shapeobj.surfaces
-    shapeObjLogo = shapeobj
-    seen.Colors.randomSurfaces2(shapeobj)
     model.add(shapeobj)
 
   $.get 'assets/background.obj', {}, (contents) ->
   # Create shape from object file
     shapeback = seen.Shapes.obj(contents, false)
     shapeback.scale(1).translate(0,0,-100).rotx(0).roty(0).rotz(0)
+    console.log(shapeback.surfaces[0].points)
   # Update scene model
-    seen.Colors.randomSurfaces2(shapeback)
     model.add(shapeback)
 
 
