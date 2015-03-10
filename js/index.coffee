@@ -1,9 +1,5 @@
   width               = 1050
   height              = 625
-  equilateralAltitude = Math.sqrt(3.0) / 2.0
-  triangleScale       = 30
-  patch_width         = width * 1.1
-  patch_height        = height * 1.1
 
   # Create patch of triangles that spans the view
   shapeobj = seen.Shapes.tetrahedron()
@@ -31,14 +27,18 @@
     seen.Colors.randomSurfaces2(shapeobj)
     model.add(shapeobj)
 
+
   $.get 'assets/background.obj', {}, (contents) ->
   # Create shape from object file
     shapeback = seen.Shapes.obj(contents, false)
     shapeback.scale(1).translate(0,0,-100).rotx(0).roty(0).rotz(0)
+    #shapeback.fill.color = seen.Colors.hsl(60, 0.5, 0.5)
+    #shapeback.fill.specularColor = surf.fill.color
+    #shapeback.dirty = true
   # Update scene model
-    seen.Colors.randomSurfaces2(shapeback)
+    
     model.add(shapeback)
-
+    
 
   context = seen.Context('seen-canvas', scene).render()
 
@@ -62,7 +62,7 @@
     .onBefore((t)->
       for surf in shapeback.surfaces
         for p in surf.points
-          p.z = 20*noiser.noise(p.x/8, p.y/8, t*1e-4)
+          p.z = 4*noiser.noise(p.x/20, p.y/20, t*1e-4)
         # Since we're modifying the point directly, we need to mark the surface dirty
         # to make sure the cache doesn't ignore the change
         surf.dirty = true
